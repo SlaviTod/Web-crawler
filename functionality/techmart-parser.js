@@ -17,16 +17,19 @@ const parseSingleTechmart = async (link) => {
     const producerId = await checkAndSaveProducer(producerAndModel[1]);
 
     const model = producerAndModel.slice(2).join(' ');
-    const price = parseFloat($('h2.textPosition b span').first().html());
+    const price = parseFloat($('h2.textPosition span').first().html());
 
     let display = 0;
     [...$('.underlineChatacteristics p')].map((el) => {
         const text = $(el).html();
 
         if (text.includes('екрана')) {
-            const textAsArr = text.split(':');
-            display = textAsArr[1].trim().split('(')[0].trim();
-            display = parseFloat(display.substring(0, display.length - 1));
+            const regex = /\d{1,2}([\.\,]\d)?\s?["]/;
+            display = text.match(regex);
+            display = parseFloat(display[0].replace(',', '.'));
+            // const textAsArr = text.split(':');
+            // display = textAsArr[1].trim().split('(')[0].trim();
+            // display = parseFloat(display.substring(0, display.length - 1));
         }
     });
 

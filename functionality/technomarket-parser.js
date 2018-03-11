@@ -26,9 +26,9 @@ const parseSingleTechnomarket = async (link) => {
         const text = $(el).html();
 
         if (text.includes('DISPLAY') && !text.includes('PORT')) {
-            const textAsArr = text.split(' ');
-            display = textAsArr[1];
-            display = parseFloat(display.replace(',', '.'));
+            const regex = /\d{1,2}([\.\,]\d)?\s?["]/;
+            display = text.match(regex);
+            display = parseFloat(display[0].replace(',', '.'));
         }
     });
 
