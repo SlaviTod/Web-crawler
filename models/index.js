@@ -1,6 +1,5 @@
 /* global __dirname, __filename */
 'use strict';
-const config = require('./config');
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
