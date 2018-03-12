@@ -5,11 +5,11 @@ const visualize = (collection) => {
 
     collection.forEach((el) => {
         result.push({
-            model: el.get().model,
-            price: el.get().price,
-            display: el.get().display,
-            producer: el.get().ProducerId,
-            siteId: el.get().SiteId,
+            model: el.model,
+            price: el.price,
+            display: el.display,
+            producer: el.Producer.name,
+            site: el.Site.name,
         });
     });
     console.table(result);

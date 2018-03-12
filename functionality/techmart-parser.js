@@ -27,9 +27,6 @@ const parseSingleTechmart = async (link) => {
             const regex = /\d{1,2}([\.\,]\d)?\s?["]/;
             display = text.match(regex);
             display = parseFloat(display[0].replace(',', '.'));
-            // const textAsArr = text.split(':');
-            // display = textAsArr[1].trim().split('(')[0].trim();
-            // display = parseFloat(display.substring(0, display.length - 1));
         }
     });
 

@@ -10,9 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   }, {
-    getAll() {
-      return this;
- },
+
   });
   Producer.associate = function(models) {
     // associations can be defined here

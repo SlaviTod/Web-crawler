@@ -1,3 +1,4 @@
+/* global process */
 const {
     orderBy,
     filterBy,

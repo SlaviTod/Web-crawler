@@ -14,10 +14,18 @@ const orderBy = (col, desc) => {
             order: [
                 [col, 'DESC'],
             ],
+            include: [
+                Producer,
+                Site,
+             ],
         });
     }
-        return Laptop.findAll({
+    return Laptop.findAll({
         order: [col],
+        include: [
+            Producer,
+            Site,
+         ],
     });
 };
 
@@ -31,6 +39,10 @@ const filterBy = async (col, operator, parameter) => {
                         [Op.gt]: parseFloat(parameter),
                     },
                 },
+                include: [
+                    Producer,
+                    Site,
+                 ],
             });
         case 'gte':
             return await Laptop.findAll({
@@ -39,6 +51,10 @@ const filterBy = async (col, operator, parameter) => {
                         [Op.gte]: parseFloat(parameter),
                     },
                 },
+                include: [
+                    Producer,
+                    Site,
+                 ],
             });
         case 'ne':
             return await Laptop.findAll({
@@ -47,6 +63,10 @@ const filterBy = async (col, operator, parameter) => {
                         [Op.ne]: parseFloat(parameter),
                     },
                 },
+                include: [
+                    Producer,
+                    Site,
+                 ],
             });
         case 'lt':
             return await Laptop.findAll({
@@ -55,6 +75,10 @@ const filterBy = async (col, operator, parameter) => {
                         [Op.lt]: parseFloat(parameter),
                     },
                 },
+                include: [
+                    Producer,
+                    Site,
+                 ],
             });
         case 'lte':
             return await Laptop.findAll({
@@ -63,6 +87,10 @@ const filterBy = async (col, operator, parameter) => {
                         [Op.lte]: parseFloat(parameter),
                     },
                 },
+                include: [
+                    Producer,
+                    Site,
+                 ],
             });
         default:
             console.log(`The operator ${operator} is not defined yet.`);
@@ -83,6 +111,10 @@ const searchBy = async (table, name) => {
             where: {
                 SiteId: id,
             },
+            include: [
+                Producer,
+                Site,
+             ],
         });
     } else if (table.toLowerCase() === 'producer') {
         const id = (await Producer.findOne({
@@ -96,6 +128,10 @@ const searchBy = async (table, name) => {
             where: {
                 ProducerId: id,
             },
+            include: [
+                Producer,
+                Site,
+             ],
         });
     }
     return null;
