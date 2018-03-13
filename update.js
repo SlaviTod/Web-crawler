@@ -1,14 +1,7 @@
+/* global Set, Map */
 const {
     clearDataBase,
 } = require('./functionality/clearDataBase');
-
-const {
-    JSDOM,
-} = require('jsdom');
-
-const $init = require('jquery');
-
-const _ = require("lodash");
 
 const {
     parseSingleTechmart,
@@ -42,15 +35,16 @@ const parseUrls1 = async (arr) => {
     }
     const url = arr.pop();
     laptops.push(await parseSingleTechnomarket(url));
+
     return await parseUrls1(arr);
-}
+};
 
 const parseElementsTechnomarket = async (list) => {
     const threads = 32;
-    const laptopsUrls = (await Promise.all(
+    return await Promise.all(
         Array.from({
-            length: threads
-        }).map((_) => parseUrls1(list))));
+            length: threads,
+        }).map((_) => parseUrls1(list)));
 };
 
 const parseUrls2 = async (arr) => {
@@ -59,15 +53,16 @@ const parseUrls2 = async (arr) => {
     }
     const url = arr.pop();
     laptops.push(await parseSingleTechmart(url));
+
     return await parseUrls2(arr);
-}
+};
 
 const parseElementsTechmart = async (list) => {
     const threads = 32;
-    const laptopsUrls = (await Promise.all(
+    return await Promise.all(
         Array.from({
-            length: threads
-        }).map((_) => parseUrls2(list))));
+            length: threads,
+        }).map((_) => parseUrls2(list)));
 };
 
 const updateData = async () => {
@@ -79,10 +74,9 @@ const updateData = async () => {
 
     await Promise.all(
         [parseElementsTechnomarket(links1),
-            parseElementsTechmart(links2)
+            parseElementsTechmart(links2),
         ]
     );
-
 };
 
 const update = async () => {
@@ -94,7 +88,6 @@ const update = async () => {
 
 
 update().then(async (laptops) => {
-
     const producers = new Set();
     laptops.map((el) => {
         producers.add(el.producer);
@@ -104,7 +97,15 @@ update().then(async (laptops) => {
     [...producers].map(async (el) => {
         await saveProducer(el);
     }));
+
+    const producersFromDb = await Producer.findAll({});
+    const produsersMap = new Map();
+    producersFromDb.map((el)=>{
+        produsersMap.set(el.name, el.id);
+    });
+
     laptops.map(async (el)=> {
+        el.ProducerId = produsersMap.get(el.producer);
         await saveLaptop(el);
     });
 });

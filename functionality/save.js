@@ -27,40 +27,17 @@ const saveProducer = async (name) => {
 };
 
 const saveLaptop = async (laptop) => {
-
     await Laptop.create({
         model: laptop.model,
         display: laptop.display,
         price: laptop.price,
-        ProducerId: (await Producer.findOne({
-            where: {
-                name: laptop.producer,
-            }})).id,
+        ProducerId: laptop.ProducerId,
         SiteId: laptop.SiteId,
     });
 };
 
-const checkAndSaveProducer = async (name) => {
-    let producer = await Producer.findOne({
-        where: {
-            name: name,
-        },
-    });
-
-    if (producer === null) {
-        await saveProducer(name);
-        producer = await Producer.findOne({
-            where: {
-                name: name,
-            },
-        });
-    }
-
-    return producer.id;
-};
-
 module.exports = {
     setSitesNameInDB,
-    saveLaptop,
     saveProducer,
+    saveLaptop,
 };
