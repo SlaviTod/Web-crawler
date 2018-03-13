@@ -43,8 +43,8 @@ const getUrlsTechnomarket = async (url) => {
     const dom = await JSDOM.fromURL(url);
 
     const $ = $init(dom.window);
-    const laptopsLinks = [...$('.product a.product-thumb')]
-        .map((link) => 'https://www.technomarket.bg' + $(link).attr('href'));
+    const laptopsLinks = (await [...$('.product a.product-thumb')]
+        .map((link) => 'https://www.technomarket.bg' + $(link).attr('href')));
 
     return _.chain(laptopsLinks)
     .flatten()

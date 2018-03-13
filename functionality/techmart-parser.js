@@ -4,19 +4,14 @@ const {
 
 const $init = require('jquery');
 
-const {
-    saveLaptop,
-    checkAndSaveProducer,
-} = require('./save');
-
 const parseSingleTechmart = async (link) => {
     const dom = await JSDOM.fromURL(link);
     const $ = $init(dom.window);
 
     const producerAndModel = $('h1.productTitle strong').html().split(' ');
-    const producerId = await checkAndSaveProducer(producerAndModel[1]);
-
+    
     const model = producerAndModel.slice(2).join(' ');
+
     const price = parseFloat($('h2.textPosition span').first().html());
 
     let display = 0;
@@ -30,21 +25,15 @@ const parseSingleTechmart = async (link) => {
         }
     });
 
-    await saveLaptop({
+    return {
         model: model,
         display: display,
         price: price,
-        ProducerId: producerId,
+        producer: producerAndModel[1],
         SiteId: 2,
-    });
-};
-
-const parseElementsTechmart = (list) => {
-    list.forEach((link) => {
-        parseSingleTechmart(link);
-    });
+    };
 };
 
 module.exports = {
-    parseElementsTechmart,
+    parseSingleTechmart,
 };

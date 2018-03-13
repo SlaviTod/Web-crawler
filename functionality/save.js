@@ -13,7 +13,7 @@ const setSitesNameInDB = async () => {
                 id: 1,
                 name: 'Technomarket',
             }),
-             Site.create({
+            Site.create({
                 id: 2,
                 name: 'Techmart',
             }),
@@ -27,11 +27,15 @@ const saveProducer = async (name) => {
 };
 
 const saveLaptop = async (laptop) => {
+
     await Laptop.create({
         model: laptop.model,
         display: laptop.display,
         price: laptop.price,
-        ProducerId: laptop.ProducerId,
+        ProducerId: (await Producer.findOne({
+            where: {
+                name: laptop.producer,
+            }})).id,
         SiteId: laptop.SiteId,
     });
 };
@@ -39,16 +43,16 @@ const saveLaptop = async (laptop) => {
 const checkAndSaveProducer = async (name) => {
     let producer = await Producer.findOne({
         where: {
-                name: name,
-            },
+            name: name,
+        },
     });
 
     if (producer === null) {
         await saveProducer(name);
         producer = await Producer.findOne({
             where: {
-                    name: name,
-                },
+                name: name,
+            },
         });
     }
 
@@ -58,5 +62,5 @@ const checkAndSaveProducer = async (name) => {
 module.exports = {
     setSitesNameInDB,
     saveLaptop,
-    checkAndSaveProducer,
+    saveProducer,
 };

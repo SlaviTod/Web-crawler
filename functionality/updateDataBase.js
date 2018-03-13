@@ -15,7 +15,7 @@ const {
     setSitesNameInDB,
 } = require('./save');
 
-const updateDataFromSites = async (siteId) => {
+const updateDataFromSites = async () => {
     const url1 = 'https://www.technomarket.bg/laptopi';
     const url2 = 'https://techmart.bg/product/product/index/lang/1/category/567/limit/48/paging/';
 
