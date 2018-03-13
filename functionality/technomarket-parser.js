@@ -9,7 +9,7 @@ const {
     checkAndSaveProducer,
 } = require('./save');
 
-const parseSingleTechnomarket = async (link) => {
+const parseSingleTechnomarket = async (link, laptops, producers) => {
     const dom = await JSDOM.fromURL(link);
     const $ = $init(dom.window);
 
@@ -26,8 +26,12 @@ const parseSingleTechnomarket = async (link) => {
         const text = $(el).html();
 
         if (text.includes('DISPLAY') && !text.includes('PORT')) {
-            const regex = /\d{1,2}([\.\,]\d)?\s?["]/;
+            let regex = /(\d{1,2}[\.\,]\d?\s?)[",'',ИНЧА]/;
             display = text.match(regex);
+            if (!display) {
+                regex = /\d{1,2}[\.\,]?\d?/;
+                display = text.match(regex);
+            }
             display = parseFloat(display[0].replace(',', '.'));
         }
     });
@@ -42,8 +46,8 @@ const parseSingleTechnomarket = async (link) => {
 };
 
 const parseElementsTechnomarket = (list) => {
-    list.forEach((link) => {
-        parseSingleTechnomarket(link);
+     list.forEach(async (link) => {
+        await parseSingleTechnomarket(link);
     });
 };
 
